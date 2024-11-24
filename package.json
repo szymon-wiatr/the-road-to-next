@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint-fix": "next lint --fix"
+    "lint-fix": "next lint --fix",
+    "type": "tsc --noEmit"
   },
   "dependencies": {
     "react": "19.0.0-rc-66855b96-20241106",
