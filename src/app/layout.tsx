@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Link from "next/link";
-import { homePath, ticketsPath } from "@/paths";
-import { buttonVariants } from "@/components/ui/button";
-import { LucideKanban } from "lucide-react";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 
