@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { initialTickets } from "@/data";
 import { ticketPath } from "@/paths";
 import Link from "next/link";
