@@ -46,7 +46,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         </CardHeader>
         <CardContent>
           <span
-            className={clsx(" whitespace-break-spaces", {
+            className={clsx("whitespace-break-spaces", {
               "line-clamp-3": !isDetail,
             })}
           >
