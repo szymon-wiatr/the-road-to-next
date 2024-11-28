@@ -1,11 +1,14 @@
+"use client";
+
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { TICKET_ICONS } from "@/features/constants";
 import { ticketPath } from "@/paths";
-import { LucideSquareArrowOutUpRight } from "lucide-react";
+import { LucideSquareArrowOutUpRight, LucideTrash } from "lucide-react";
 import Link from "next/link";
 import { Ticket } from "@prisma/client";
+import { deleteTicket } from "../actions/delete-ticket";
 
 type TicketItemProps = {
   ticket: Ticket;
@@ -21,11 +24,23 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     </Button>
   );
 
+  const handleDeleteTicket = async () => {
+    await deleteTicket(ticket.id);
+  };
+
+  const deleteButton = (
+    <Button variant="outline" size="icon" onClick={handleDeleteTicket}>
+      <LucideTrash className="h-4 w-4" />
+    </Button>
+  );
+
   return (
-    <div className={clsx("w-full flex gap-x-1", {
+    <div
+      className={clsx("w-full flex gap-x-1", {
         "max-w-[580px]": isDetail,
         "max-w-[420px]": !isDetail,
-    })}>
+      })}
+    >
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="flex gap-x-2">
@@ -34,16 +49,18 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <span className={clsx(" whitespace-break-spaces", {
-                "line-clamp-3": !isDetail,
-          })}>
+          <span
+            className={clsx(" whitespace-break-spaces", {
+              "line-clamp-3": !isDetail,
+            })}
+          >
             {ticket.content}
           </span>
         </CardContent>
       </Card>
-      {isDetail ? null : (
-        <div className="flex flex-col gap-y-1">{detailButton}</div>
-      )}
+      <div className="flex flex-col gap-y-1">
+        {isDetail ? deleteButton : detailButton}
+      </div>
     </div>
   );
 };
