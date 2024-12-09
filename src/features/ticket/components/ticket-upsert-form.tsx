@@ -8,6 +8,10 @@ import { Ticket } from "@prisma/client";
 import { upsertTicket } from "../actions/upsert-ticket";
 import { SubmitButton } from "@/components/form/submit-button";
 import { FieldError } from "@/components/form/field-error";
+import {
+  ActionState,
+  EMPTY_ACTION_STATE,
+} from "@/components/form/utils/to-action-state";
 
 type TicketUpsertFormProps = {
   ticket?: Ticket;
@@ -16,10 +20,7 @@ type TicketUpsertFormProps = {
 const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
   const [actionState, action] = useActionState(
     upsertTicket.bind(null, ticket?.id),
-    {
-      message: "",
-      fieldErrors: {},
-    }
+    EMPTY_ACTION_STATE
   );
 
   return (
@@ -30,7 +31,8 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         id="title"
         name="title"
         defaultValue={
-          (actionState.payload?.get("title") as string) ?? ticket?.title
+          ((actionState as ActionState).payload?.get("title") as string) ??
+          ticket?.title
         }
       />
       <FieldError actionState={actionState} name="title" />
@@ -40,7 +42,8 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         id="content"
         name="content"
         defaultValue={
-          (actionState.payload?.get("content") as string) ?? ticket?.content
+          ((actionState as ActionState).payload?.get("content") as string) ??
+          ticket?.content
         }
       />
       <FieldError actionState={actionState} name="content" />
