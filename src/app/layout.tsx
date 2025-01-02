@@ -4,7 +4,6 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { RedirectToast } from "@/components/redirect-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,7 +45,6 @@ export default function RootLayout({
             {children}
           </main>
           <Toaster expand />
-          <RedirectToast />
         </ThemeProvider>
       </body>
     </html>
