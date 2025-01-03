@@ -44,17 +44,6 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     </Button>
   );
 
-  const deleteButton = (
-    <ConfirmDialog
-      action={deleteTicket.bind(null, ticket.id)}
-      trigger={
-        <Button variant="outline" size="icon">
-          <LucideTrash className="h-4 w-4" />
-        </Button>
-      }
-    />
-  );
-
   const moreMenu = (
     <TicketMoreMenu
       ticket={ticket}
@@ -100,7 +89,6 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         {isDetail ? (
           <>
             {editButton}
-            {deleteButton}
             {moreMenu}
           </>
         ) : (
