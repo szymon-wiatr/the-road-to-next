@@ -66,6 +66,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
             }
           /> */}
           <DatePicker
+            key={actionState.timestamp}
             id="deadline"
             name="deadline"
             defaultValue={
