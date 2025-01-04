@@ -15,7 +15,7 @@ import { LucideTrash } from "lucide-react";
 import { updateTicketStatus } from "../actions/update-ticket-status";
 import { toast } from "sonner";
 import { deleteTicket } from "../actions/delete-ticket";
-import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
+import { useConfirmDialog } from "@/components/confirm-dialog";
 
 type TicketMoreMenuProps = {
   ticket: Ticket;
