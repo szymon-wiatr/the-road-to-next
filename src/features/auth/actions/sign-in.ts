@@ -19,7 +19,6 @@ const signInSchema = z.object({
 });
 
 export const signIn = async (_actionState: ActionState, formData: FormData) => {
-  console.log(Object.fromEntries(formData).username);
   try {
     const { email, password } = signInSchema.parse(
       Object.fromEntries(formData)
