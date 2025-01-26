@@ -3,7 +3,10 @@ import { SubmitButton } from "@/components/form/submit-button";
 import { Input } from "@/components/ui/input";
 
 import { useActionState } from "react";
-import { EMPTY_ACTION_STATE } from "@/components/form/utils/to-action-state";
+import {
+  ActionState,
+  EMPTY_ACTION_STATE,
+} from "@/components/form/utils/to-action-state";
 import { Form } from "@/components/form/form";
 import { FieldError } from "@/components/form/field-error";
 import { signIn } from "../actions/sign-in";
@@ -13,10 +16,23 @@ const SignInForm = () => {
 
   return (
     <Form action={action} actionState={actionState}>
-      <Input name="email" placeholder="Email" />
+      <Input
+        name="email"
+        placeholder="Email"
+        defaultValue={
+          (actionState as ActionState).payload?.get("email") as string
+        }
+      />
       <FieldError name="email" actionState={actionState} />
 
-      <Input name="password" placeholder="Password" type="password" />
+      <Input
+        name="password"
+        placeholder="Password"
+        type="password"
+        defaultValue={
+          (actionState as ActionState).payload?.get("password") as string
+        }
+      />
       <FieldError name="password" actionState={actionState} />
 
       <SubmitButton label="Sign In" />
