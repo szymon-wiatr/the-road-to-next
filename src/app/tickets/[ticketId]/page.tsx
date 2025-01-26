@@ -1,5 +1,5 @@
-import { getTicket } from "@/features/queries/get-ticket";
-import { getTickets } from "@/features/queries/get-tickets";
+import { getTicket } from "@/features/ticket/queries/get-ticket";
+import { getTickets } from "@/features/ticket/queries/get-tickets";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
 import { notFound } from "next/navigation";
 
