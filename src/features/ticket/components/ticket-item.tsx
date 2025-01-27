@@ -20,7 +20,9 @@ import { toCurrencyFromCent } from "@/utils/currency";
 import { TicketMoreMenu } from "./ticket-more-menu";
 
 type TicketItemProps = {
-  ticket: Prisma.TicketGetPayload<{ include: { user: true } }>;
+  ticket: Prisma.TicketGetPayload<{
+    include: { user: { select: { username: true } } };
+  }>;
   isDetail?: boolean;
 };
 
