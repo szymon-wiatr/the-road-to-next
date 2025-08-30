@@ -4,11 +4,8 @@ import { TicketList } from "@/features/ticket/components/ticket-list";
 import { Spinner } from "@/components/spinner";
 import { CardCompact } from "@/components/card-compact";
 import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
-import { getBaseUrl } from "@/utils/url";
 
 const TicketsPage = async () => {
-  console.log(getBaseUrl());
-  
   return (
     <div className="flex-1 flex flex-col gap-y-8">
       <Heading title="Tickets" description="All your tickets at one place" />
