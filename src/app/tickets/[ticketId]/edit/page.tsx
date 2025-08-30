@@ -1,9 +1,9 @@
 import { CardCompact } from "@/components/card-compact";
 import { getTicket } from "@/features/ticket/queries/get-ticket";
 import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
-import { notFound } from "next/navigation";
 import { getAuth } from "@/features/auth/queries/get-auth";
 import { isOwner } from "@/features/auth/utils/is-owner";
+import { notFound } from "next/navigation";
 
 type TicketEditPageProps = {
   params: Promise<{
