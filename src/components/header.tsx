@@ -1,6 +1,6 @@
 "use client";
 
-import { homePath, ticketsPath, signInPath, signUpPath } from "@/paths";
+import { homePath, signInPath, signUpPath } from "@/paths";
 import { LucideKanban, LucideLogOut } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "./ui/button";
@@ -19,17 +19,9 @@ const Header = () => {
   }
 
   const navItems = user ? (
-    <>
-      <Link
-        href={ticketsPath()}
-        className={buttonVariants({ variant: "default" })}
-      >
-        Tickets
-      </Link>
-      <form action={signOut}>
-        <SubmitButton label="Sign Out" icon={<LucideLogOut />} />
-      </form>
-    </>
+    <form action={signOut}>
+      <SubmitButton label="Sign Out" icon={<LucideLogOut />} />
+    </form>
   ) : (
     <>
       <Link
