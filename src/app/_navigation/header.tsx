@@ -3,12 +3,12 @@
 import { homePath, signInPath, signUpPath } from "@/paths";
 import { LucideKanban } from "lucide-react";
 import React from "react";
-import { buttonVariants } from "./ui/button";
+import { buttonVariants } from "../../components/ui/button";
 import Link from "next/link";
-import { ThemeSwitcher } from "./theme/theme-switcher";
+import { ThemeSwitcher } from "../../components/theme/theme-switcher";
 
 import { useAuth } from "@/features/auth/hooks/use-auth";
-import { AccountDropdown } from "@/components/account-dropdown";
+import { AccountDropdown } from "@/app/_navigation/account-dropdown";
 
 const Header = () => {
   const { user, isFetched } = useAuth();
