@@ -10,7 +10,7 @@ type TicketListProps = {
 };
 
 const TicketList = async ({ userId, searchParams }: TicketListProps) => {
-  const tickets = await getTickets(userId, await searchParams);
+  const tickets = await getTickets(userId, searchParams);
 
   return (
     <div className="flex-1 flex flex-col items-center gap-y-4 animate-fade-in-from-top">
