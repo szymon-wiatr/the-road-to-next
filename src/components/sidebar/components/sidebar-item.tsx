@@ -10,12 +10,10 @@ import { Separator } from "@/components/ui/separator";
 type SidebarItemProps = {
   isOpen: boolean;
   navItem: NavItem;
+  isActive: boolean;
 };
 
-const SidebarItem = ({ isOpen, navItem }: SidebarItemProps) => {
-  const path = usePathname();
-  const isActive = path === navItem.href;
-
+const SidebarItem = ({ isOpen, navItem, isActive }: SidebarItemProps) => {
   return (
     <>
       {navItem.separator && <Separator />}
