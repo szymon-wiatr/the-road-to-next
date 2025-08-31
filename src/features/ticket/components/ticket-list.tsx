@@ -2,6 +2,7 @@ import { getTickets } from "@/features/ticket/queries/get-tickets";
 import { TicketItem } from "./ticket-item";
 import { SearchInput } from "@/components/search-input";
 import { SearchParams } from "@/features/ticket/search-params";
+import { Placeholder } from "@/components/placeholder";
 
 type TicketListProps = {
   userId?: string;
@@ -17,9 +18,11 @@ const TicketList = async ({ userId, searchParams }: TicketListProps) => {
         <SearchInput placeholder="Search tickets ..." />
       </div>
 
-      {tickets.map((ticket) => {
-        return <TicketItem key={ticket.id} ticket={ticket} />;
-      })}
+      {tickets.length ? (
+        tickets.map((ticket) => <TicketItem key={ticket.id} ticket={ticket} />)
+      ) : (
+        <Placeholder label="No tickets found" />
+      )}
     </div>
   );
 };
