@@ -1,15 +1,14 @@
 "use client";
 
 import { homePath, signInPath, signUpPath } from "@/paths";
-import { LucideKanban, LucideLogOut } from "lucide-react";
+import { LucideKanban } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "./ui/button";
 import Link from "next/link";
 import { ThemeSwitcher } from "./theme/theme-switcher";
-import { SubmitButton } from "./form/submit-button";
-import { signOut } from "@/features/auth/actions/sign-out";
 
 import { useAuth } from "@/features/auth/hooks/use-auth";
+import { AccountDropdown } from "@/components/account-dropdown";
 
 const Header = () => {
   const { user, isFetched } = useAuth();
@@ -19,9 +18,7 @@ const Header = () => {
   }
 
   const navItems = user ? (
-    <form action={signOut}>
-      <SubmitButton label="Sign Out" icon={<LucideLogOut />} />
-    </form>
+    <AccountDropdown user={user} />
   ) : (
     <>
       <Link
