@@ -20,8 +20,8 @@ const TicketList = async ({ userId, searchParams }: TicketListProps) => {
         <SortSelect
           options={[
             { sortKey: "createdAt", sortValue: "desc", label: "Newest" },
+            { sortKey: "createdAt", sortValue: "asc", label: "Oldest" },
             { sortKey: "bounty", sortValue: "desc", label: "Bounty" },
-            { sortKey: "title", sortValue: "asc", label: "Title" },
           ]}
         />
       </div>
