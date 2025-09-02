@@ -9,7 +9,7 @@ export const getTickets = async (
     userId,
     title: {
       contains: searchParams.search,
-      mode: "insensitive" as coonst,
+      mode: "insensitive" as const,
     },
   };
 
