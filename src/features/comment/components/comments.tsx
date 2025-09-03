@@ -10,14 +10,22 @@ import { getComments } from "../queries/get-comments";
 
 type CommentsProps = {
   ticketId: string;
-  comments?: CommentWithMetadata[];
+  paginatedComments: {
+    list: CommentWithMetadata[];
+    metadata: { count: number; hasNextPage: boolean };
+  };
 };
 
-const Comments = ({ ticketId, comments = [] }: CommentsProps) => {
+const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
   const handleMore = async () => {
-    const result = await getComments(ticketId);
-    console.log("result", result);
+    const morePaginatedComments = await getComments(ticketId, comments.length);
+    const moreComments = morePaginatedComments.list;
+    console.log("🚀 ~ handleMore ~ moreComments:", moreComments);
+
+    // TODO append more comments to the comments
   };
+
+  const comments = paginatedComments.list;
 
   return (
     <>
@@ -28,7 +36,7 @@ const Comments = ({ ticketId, comments = [] }: CommentsProps) => {
       />
 
       <div className="flex flex-col gap-y-2 ml-8">
-        {comments?.map((comment) => (
+        {comments.map((comment) => (
           <CommentItem
             key={comment.id}
             comment={comment}
@@ -41,7 +49,9 @@ const Comments = ({ ticketId, comments = [] }: CommentsProps) => {
         ))}
       </div>
       <div className="flex flex-col justify-center ml-8">
-        <Button variant="ghost" onClick={handleMore}>More</Button>
+        <Button variant="ghost" onClick={handleMore}>
+          More
+        </Button>
       </div>
     </>
   );
