@@ -22,16 +22,19 @@ import { getAuth } from "@/features/auth/queries/get-auth";
 import { isOwner } from "@/features/auth/utils/is-owner";
 import { Comments } from "@/features/comment/components/comments";
 import { Suspense } from "react";
+
 import { Skeleton } from "@/components/ui/skeleton";
+import { CommentWithMetadata } from "@/features/comment/types";
 
 type TicketItemProps = {
   ticket: Prisma.TicketGetPayload<{
     include: { user: { select: { username: true } } };
   }>;
   isDetail?: boolean;
+  comments?: CommentWithMetadata[];
 };
 
-const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
+const TicketItem = async ({ ticket, isDetail, comments }: TicketItemProps) => {
   const { user } = await getAuth();
 
   const isTicketOwner = isOwner(user, ticket);
@@ -120,7 +123,7 @@ const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
             </div>
           }
         >
-          <Comments ticketId={ticket.id} />
+          <Comments ticketId={ticket.id} comments={comments} />
         </Suspense>
       ) : null}
     </div>
