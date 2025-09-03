@@ -1,5 +1,3 @@
-"use client";
-
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,18 +18,13 @@ import Link from "next/link";
 import { Prisma } from "@prisma/client";
 import { toCurrencyFromCent } from "@/utils/currency";
 import { TicketMoreMenu } from "./ticket-more-menu";
-import { Comments } from "@/features/comment/components/comments";
-import { Suspense } from "react";
-
-import { Skeleton } from "@/components/ui/skeleton";
-import { CommentWithMetadata } from "@/features/comment/types";
 
 type TicketItemProps = {
   ticket: Prisma.TicketGetPayload<{
     include: { user: { select: { username: true } } };
   }> & { isOwner: boolean };
   isDetail?: boolean;
-  comments?: CommentWithMetadata[];
+  comments?: React.ReactNode;
 };
 
 const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
@@ -109,19 +102,7 @@ const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
           )}
         </div>
       </div>
-      {isDetail ? (
-        <Suspense
-          fallback={
-            <div className="flex flex-col gap-y-4">
-              <Skeleton className="h-[250px] w-full" />
-              <Skeleton className="h-[80px] ml-8 w-full" />
-              <Skeleton className="h-[80px] ml-8 w-full" />
-            </div>
-          }
-        >
-          <Comments ticketId={ticket.id} comments={comments} />
-        </Suspense>
-      ) : null}
+      {comments}
     </div>
   );
 };

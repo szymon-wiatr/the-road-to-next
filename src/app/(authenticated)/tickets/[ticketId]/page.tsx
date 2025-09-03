@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { homePath } from "@/paths";
 import { Separator } from "@/components/ui/separator";
 import { getComments } from "@/features/comment/queries/get-comments";
+import { Comments } from "@/features/comment/components/comments";
 
 type TicketPageProps = {
   params: Promise<{
@@ -17,7 +18,10 @@ const TicketPage = async ({ params }: TicketPageProps) => {
   const ticketPromise = getTicket(ticketId);
   const commentsPromise = getComments(ticketId);
 
-  const [ticket, comments] = await Promise.all([ticketPromise, commentsPromise]);
+  const [ticket, comments] = await Promise.all([
+    ticketPromise,
+    commentsPromise,
+  ]);
 
   if (!ticket) {
     notFound();
@@ -25,18 +29,24 @@ const TicketPage = async ({ params }: TicketPageProps) => {
 
   return (
     <div className="flex-1 flex flex-col gap-y-8">
-      <Breadcrumbs breadcrumbs={[
-        {
-          title: "Tickets",
-          href: homePath(),
-        },
-        {
-          title: ticket.title,
-        },
-      ]} />
+      <Breadcrumbs
+        breadcrumbs={[
+          {
+            title: "Tickets",
+            href: homePath(),
+          },
+          {
+            title: ticket.title,
+          },
+        ]}
+      />
       <Separator />
       <div className="flex justify-center animate-fade-in-from-top">
-        <TicketItem ticket={ticket} isDetail comments={comments} />
+        <TicketItem
+          ticket={ticket}
+          isDetail
+          comments={<Comments ticketId={ticketId} comments={comments} />}
+        />
       </div>
     </div>
   );
