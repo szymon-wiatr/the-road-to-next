@@ -11,7 +11,7 @@ import { CommentWithMetadata } from "../types";
 
 type CommentCreateFormProps = {
   ticketId: string;
-  onCreateComment?: (comment: CommentWithMetadata) => void;
+  onCreateComment?: (comment: CommentWithMetadata | undefined) => void;
 };
 
 const CommentCreateForm = ({ ticketId, onCreateComment }: CommentCreateFormProps) => {
@@ -21,8 +21,8 @@ const CommentCreateForm = ({ ticketId, onCreateComment }: CommentCreateFormProps
   );
 
 
-  const handleSuccess = (actionState: ActionState) => {
-    onCreateComment?.(actionState.data as CommentWithMetadata);
+  const handleSuccess = (actionState: ActionState<CommentWithMetadata | undefined>) => {
+    onCreateComment?.(actionState.data);
   };
 
   return (
