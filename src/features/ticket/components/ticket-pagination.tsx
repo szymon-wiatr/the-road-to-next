@@ -8,17 +8,16 @@ import {
   searchParser,
 } from "../search-params";
 import { useEffect, useRef } from "react";
+import { PaginatiedData } from "@/types/pagination";
+import { TicketWithMetadata } from "../types";
 
 type TicketPaginationProps = {
-  count: number;
-  hasNextPage: boolean;
+  paginatedTicketMetadata: PaginatiedData<TicketWithMetadata>["metadata"];
 };
 
 const TicketPagination = ({
   paginatedTicketMetadata,
-}: {
-  paginatedTicketMetadata: TicketPaginationProps;
-}) => {
+}: TicketPaginationProps) => {
   const [pagination, setPagination] = useQueryStates(
     paginationParser,
     paginationOptions

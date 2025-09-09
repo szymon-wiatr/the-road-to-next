@@ -18,11 +18,10 @@ import Link from "next/link";
 import { Prisma } from "@prisma/client";
 import { toCurrencyFromCent } from "@/utils/currency";
 import { TicketMoreMenu } from "./ticket-more-menu";
+import { TicketWithMetadata } from "../types";
 
 type TicketItemProps = {
-  ticket: Prisma.TicketGetPayload<{
-    include: { user: { select: { username: true } } };
-  }> & { isOwner: boolean };
+  ticket: TicketWithMetadata;
   isDetail?: boolean;
   comments?: React.ReactNode;
 };
