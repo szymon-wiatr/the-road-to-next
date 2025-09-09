@@ -19,10 +19,11 @@ export const getComments = async (
 
   const take = 2;
 
-  const [comments, count] = await prisma.$transaction([
+  // eslint-disable-next-line prefer-const
+  let [comments, count] = await prisma.$transaction([
     prisma.comment.findMany({
       where,
-      take,
+      take: take + 1,
       cursor: cursor
         ? { id: cursor.id, createdAt: new Date(cursor.createdAt) }
         : undefined,
@@ -48,6 +49,10 @@ export const getComments = async (
     }),
   ]);
 
+  const hasNextPage = comments.length > take;
+
+  comments = hasNextPage ? comments.slice(0, -1) : comments;
+
   const lastComment = comments.at(-1);
 
   return {
@@ -57,7 +62,7 @@ export const getComments = async (
     })),
     metadata: {
       count,
-      hasNextPage: true, // Implement hasNextPage
+      hasNextPage,
       cursor: lastComment
         ? {
             id: lastComment.id,
