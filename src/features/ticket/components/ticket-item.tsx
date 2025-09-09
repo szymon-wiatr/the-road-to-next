@@ -15,7 +15,6 @@ import {
   LucideSquareArrowOutUpRight,
 } from "lucide-react";
 import Link from "next/link";
-import { Prisma } from "@prisma/client";
 import { toCurrencyFromCent } from "@/utils/currency";
 import { TicketMoreMenu } from "./ticket-more-menu";
 import { TicketWithMetadata } from "../types";
