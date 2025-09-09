@@ -4,14 +4,17 @@ import { getAuth } from "@/features/auth/queries/get-auth";
 import { isOwner } from "@/features/auth/utils/is-owner";
 import prisma from "@/lib/prisma";
 
-export const getComments = async (ticketId: string, cursor?: string) => {
+export const getComments = async (
+  ticketId: string,
+  cursor?: {
+    id: string;
+    createdAt: number;
+  }
+) => {
   const { user } = await getAuth();
 
   const where = {
     ticketId,
-    id: {
-      lt: cursor,
-    },
   };
 
   const take = 2;
@@ -20,6 +23,10 @@ export const getComments = async (ticketId: string, cursor?: string) => {
     prisma.comment.findMany({
       where,
       take,
+      cursor: cursor
+        ? { id: cursor.id, createdAt: new Date(cursor.createdAt) }
+        : undefined,
+      skip: cursor ? 1 : 0,
       include: {
         user: {
           select: {
@@ -27,14 +34,21 @@ export const getComments = async (ticketId: string, cursor?: string) => {
           },
         },
       },
-      orderBy: {
-        id: "desc",
-      },
+      orderBy: [
+        {
+          createdAt: "desc",
+        },
+        {
+          id: "desc",
+        },
+      ],
     }),
     prisma.comment.count({
       where,
     }),
   ]);
+
+  const lastComment = comments.at(-1);
 
   return {
     list: comments.map((comment) => ({
@@ -44,7 +58,12 @@ export const getComments = async (ticketId: string, cursor?: string) => {
     metadata: {
       count,
       hasNextPage: true, // Implement hasNextPage
-      cursor: comments.at(-1)?.id,
+      cursor: lastComment
+        ? {
+            id: lastComment.id,
+            createdAt: lastComment.createdAt.valueOf(),
+          }
+        : undefined,
     },
   };
 };

@@ -13,7 +13,11 @@ type CommentsProps = {
   ticketId: string;
   paginatedComments: {
     list: CommentWithMetadata[];
-    metadata: { count: number; hasNextPage: boolean, cursor?: string };
+    metadata: {
+      count: number;
+      hasNextPage: boolean;
+      cursor?: { id: string; createdAt: number };
+    };
   };
 };
 
@@ -45,7 +49,12 @@ const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
       <CardCompact
         title="Create Comment"
         description="A new comment will be created"
-        content={<CommentCreateForm ticketId={ticketId} onCreateComment={handleCreateComment} />}
+        content={
+          <CommentCreateForm
+            ticketId={ticketId}
+            onCreateComment={handleCreateComment}
+          />
+        }
       />
 
       <div className="flex flex-col gap-y-2 ml-8">
