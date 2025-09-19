@@ -1,5 +1,9 @@
 "use client";
 
+import { Ticket, TicketStatus } from "@prisma/client";
+import { LucideTrash } from "lucide-react";
+import { toast } from "sonner";
+import { useConfirmDialog } from "@/components/confirm-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,17 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { TICKET_ICONS, TICKET_STATUS_LABELS } from "@/features/constants";
-import { Ticket, TicketStatus } from "@prisma/client";
-import { LucideTrash } from "lucide-react";
-import { updateTicketStatus } from "../actions/update-ticket-status";
-import { toast } from "sonner";
 import { deleteTicket } from "../actions/delete-ticket";
-import { useConfirmDialog } from "@/components/confirm-dialog";
+import { updateTicketStatus } from "../actions/update-ticket-status";
+import { TICKET_STATUS_LABELS } from "../constants";
 
 type TicketMoreMenuProps = {
   ticket: Ticket;
-  trigger: React.ReactNode;
+  trigger: React.ReactElement;
 };
 
 const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
@@ -27,7 +27,7 @@ const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
     action: deleteTicket.bind(null, ticket.id),
     trigger: (
       <DropdownMenuItem>
-        <LucideTrash className="mr-2 h-4 w-4" />
+        <LucideTrash className="h-4 w-4" />
         <span>Delete</span>
       </DropdownMenuItem>
     ),
@@ -36,7 +36,9 @@ const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
   const handleUpdateTicketStatus = async (value: string) => {
     const promise = updateTicketStatus(ticket.id, value as TicketStatus);
 
-    toast.promise(promise, { loading: "Updating status..." });
+    toast.promise(promise, {
+      loading: "Updating status...",
+    });
 
     const result = await promise;
 
@@ -52,14 +54,11 @@ const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
       value={ticket.status}
       onValueChange={handleUpdateTicketStatus}
     >
-      {(Object.keys(TICKET_STATUS_LABELS) as Array<TicketStatus>).map(
-        (status) => (
-          <DropdownMenuRadioItem key={status} value={status}>
-            {TICKET_ICONS[status]}
-            <span>{TICKET_STATUS_LABELS[status]}</span>
-          </DropdownMenuRadioItem>
-        )
-      )}
+      {(Object.keys(TICKET_STATUS_LABELS) as Array<TicketStatus>).map((key) => (
+        <DropdownMenuRadioItem key={key} value={key}>
+          {TICKET_STATUS_LABELS[key]}
+        </DropdownMenuRadioItem>
+      ))}
     </DropdownMenuRadioGroup>
   );
 
@@ -69,9 +68,9 @@ const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-        <DropdownMenuContent side="right" className="w-56">
-          <DropdownMenuSeparator />
+        <DropdownMenuContent className="w-56" side="right">
           {ticketStatusRadioGroupItems}
+          <DropdownMenuSeparator />
           {deleteButton}
         </DropdownMenuContent>
       </DropdownMenu>

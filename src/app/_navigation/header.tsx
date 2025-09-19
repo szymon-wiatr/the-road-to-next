@@ -1,14 +1,12 @@
 "use client";
 
-import { homePath, signInPath, signUpPath } from "@/paths";
 import { LucideKanban } from "lucide-react";
-import React from "react";
-import { buttonVariants } from "../../components/ui/button";
 import Link from "next/link";
-import { ThemeSwitcher } from "../../components/theme/theme-switcher";
-
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
+import { buttonVariants } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/hooks/use-auth";
-import { AccountDropdown } from "@/app/_navigation/account-dropdown";
+import { homePath, signInPath, signUpPath } from "@/paths";
+import { AccountDropdown } from "./account-dropdown";
 
 const Header = () => {
   const { user, isFetched } = useAuth();
@@ -39,12 +37,12 @@ const Header = () => {
   return (
     <nav
       className="
-      animate-header-from-top
-      supports-backdrop-blur:bg-background/60
-      fixed left-0 right-0 top-0 z-20
-      border-b bg-background/95 backdrop-blur
-      w-full flex py-2.5 px-5 justify-between
-    "
+        animate-header-from-top
+        supports-backdrop-blur:bg-background/60
+        fixed left-0 right-0 top-0 z-20
+        border-b bg-background/95 backdrop-blur
+        w-full flex py-2.5 px-5 justify-between
+      "
     >
       <div className="flex align-items gap-x-2">
         <Link

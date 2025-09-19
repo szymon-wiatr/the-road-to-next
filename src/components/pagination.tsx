@@ -1,4 +1,4 @@
-import { PaginatiedData } from "@/types/pagination";
+import { PaginatedData } from "@/types/pagination";
 import { Button } from "./ui/button";
 import {
   Select,
@@ -16,7 +16,7 @@ type PageAndSize = {
 type PaginationProps = {
   pagination: PageAndSize;
   onPagination: (pagination: PageAndSize) => void;
-  paginatedMetadata: PaginatiedData<unknown>["metadata"];
+  paginatedMetadata: PaginatedData<unknown>["metadata"];
 };
 
 const Pagination = ({
@@ -25,9 +25,10 @@ const Pagination = ({
   paginatedMetadata: { count, hasNextPage },
 }: PaginationProps) => {
   const startOffset = pagination.page * pagination.size + 1;
-  const endOffset = startOffset + pagination.size - 1;
+  const endOffset = startOffset - 1 + pagination.size;
+  const actualEndOffset = Math.min(endOffset, count);
 
-  const label = `${startOffset} - ${endOffset} of ${count}`;
+  const label = `${startOffset}-${actualEndOffset} of ${count}`;
 
   const handlePreviousPage = () => {
     onPagination({ ...pagination, page: pagination.page - 1 });
@@ -45,7 +46,7 @@ const Pagination = ({
     <Button
       variant="outline"
       size="sm"
-      disabled={pagination.page === 0}
+      disabled={pagination.page < 1}
       onClick={handlePreviousPage}
     >
       Previous
@@ -65,8 +66,8 @@ const Pagination = ({
 
   const sizeButton = (
     <Select
-      defaultValue={pagination.size.toString()}
       onValueChange={handleChangeSize}
+      defaultValue={pagination.size.toString()}
     >
       <SelectTrigger className="h-[36px]">
         <SelectValue />
@@ -82,7 +83,7 @@ const Pagination = ({
   );
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex justify-between items-center">
       <p className="text-sm text-muted-foreground">{label}</p>
       <div className="flex gap-x-2">
         {sizeButton}

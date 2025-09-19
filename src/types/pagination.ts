@@ -1,8 +1,4 @@
-export type PaginatiedData<T> = {
+export type PaginatedData<T> = {
   list: T[];
-  metadata: {
-    count: number;
-    hasNextPage: boolean;
-    cursor?: { id: string; createdAt: number };
-  };
+  metadata: { count: number; hasNextPage: boolean; cursor?: string };
 };

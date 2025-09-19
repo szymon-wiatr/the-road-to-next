@@ -1,4 +1,3 @@
-import React from "react";
 import { Separator } from "./ui/separator";
 
 type HeadingProps = {
@@ -17,6 +16,7 @@ const Heading = ({ title, description, tabs }: HeadingProps) => {
           <p className="text-sm text-muted-foreground">{description}</p>
         )}
       </div>
+
       <Separator />
     </>
   );

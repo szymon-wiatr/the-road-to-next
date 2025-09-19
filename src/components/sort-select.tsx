@@ -3,7 +3,6 @@
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -22,7 +21,7 @@ type SortObject = {
 
 type SortSelectProps = {
   value: SortObject;
-  onChange: (value: SortObject) => void;
+  onChange: (sort: SortObject) => void;
   options: SortSelectOption[];
 };
 
@@ -38,23 +37,21 @@ const SortSelect = ({ value, onChange, options }: SortSelectProps) => {
 
   return (
     <Select
-      defaultValue={value.sortKey + "_" + value.sortValue}
       onValueChange={handleSort}
+      defaultValue={value.sortKey + "_" + value.sortValue}
     >
       <SelectTrigger>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          {options.map((option) => (
-            <SelectItem
-              key={option.sortKey + option.sortValue}
-              value={option.sortKey + "_" + option.sortValue}
-            >
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectGroup>
+        {options.map((option) => (
+          <SelectItem
+            key={option.sortKey + option.sortValue}
+            value={option.sortKey + "_" + option.sortValue}
+          >
+            {option.label}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );

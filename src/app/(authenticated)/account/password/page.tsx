@@ -1,5 +1,5 @@
 import { Heading } from "@/components/heading";
-import { AccountTabs } from "@/app/(authenticated)/account/_navigation/tabs";
+import { AccountTabs } from "../_navigation/tabs";
 
 const PasswordPage = () => {
   return (
@@ -7,7 +7,7 @@ const PasswordPage = () => {
       <Heading
         title="Password"
         description="Keep your account secure"
-        tabs=<AccountTabs />
+        tabs={<AccountTabs />}
       />
     </div>
   );

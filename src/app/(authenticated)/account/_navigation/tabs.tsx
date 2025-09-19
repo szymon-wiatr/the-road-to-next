@@ -1,14 +1,15 @@
 "use client";
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
-import { accountPasswordPath, accountProfilePath } from "@/paths";
 import { usePathname } from "next/navigation";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { accountPasswordPath, accountProfilePath } from "@/paths";
 
 const AccountTabs = () => {
-  const pathname = usePathname();
+  const pathName = usePathname();
+
   return (
-    <Tabs value={pathname.split("/").at(-1)}>
+    <Tabs value={pathName.split("/").at(-1)}>
       <TabsList>
         <TabsTrigger value="profile" asChild>
           <Link href={accountProfilePath()}>Profile</Link>

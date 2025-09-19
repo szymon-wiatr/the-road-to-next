@@ -1,23 +1,25 @@
+"use client";
+
 import clsx from "clsx";
+import {
+  LucideArrowUpRightFromSquare,
+  LucideMoreVertical,
+  LucidePencil,
+} from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import { TICKET_ICONS } from "@/features/constants";
 import { ticketEditPath, ticketPath } from "@/paths";
-import {
-  LucideMoreVertical,
-  LucidePencil,
-  LucideSquareArrowOutUpRight,
-} from "lucide-react";
-import Link from "next/link";
 import { toCurrencyFromCent } from "@/utils/currency";
-import { TicketMoreMenu } from "./ticket-more-menu";
+import { TICKET_ICONS } from "../constants";
 import { TicketWithMetadata } from "../types";
+import { TicketMoreMenu } from "./ticket-more-menu";
 
 type TicketItemProps = {
   ticket: TicketWithMetadata;
@@ -29,7 +31,7 @@ const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
   const detailButton = (
     <Button variant="outline" size="icon" asChild>
       <Link prefetch href={ticketPath(ticket.id)}>
-        <LucideSquareArrowOutUpRight className="h-4 w-4" />
+        <LucideArrowUpRightFromSquare className="h-4 w-4" />
       </Link>
     </Button>
   );
@@ -64,7 +66,7 @@ const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="flex gap-x-2">
-              <div>{TICKET_ICONS[ticket.status]}</div>
+              <span>{TICKET_ICONS[ticket.status]}</span>
               <span className="truncate">{ticket.title}</span>
             </CardTitle>
           </CardHeader>
@@ -86,6 +88,7 @@ const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
             </p>
           </CardFooter>
         </Card>
+
         <div className="flex flex-col gap-y-1">
           {isDetail ? (
             <>
@@ -100,6 +103,7 @@ const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
           )}
         </div>
       </div>
+
       {comments}
     </div>
   );

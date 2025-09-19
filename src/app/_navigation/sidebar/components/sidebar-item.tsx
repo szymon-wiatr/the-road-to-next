@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { cloneElement } from "react";
 import { buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { closedClassName } from "../constants";
 import { NavItem } from "../types";
-import { Separator } from "@/components/ui/separator";
 
 type SidebarItemProps = {
   isOpen: boolean;
-  navItem: NavItem;
   isActive: boolean;
+  navItem: NavItem;
 };
 
-const SidebarItem = ({ isOpen, navItem, isActive }: SidebarItemProps) => {
+const SidebarItem = ({ isOpen, isActive, navItem }: SidebarItemProps) => {
   return (
     <>
       {navItem.separator && <Separator />}

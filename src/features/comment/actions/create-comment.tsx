@@ -1,14 +1,14 @@
 "use server";
 
-import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import {
   ActionState,
   fromErrorToActionState,
   toActionState,
 } from "@/components/form/utils/to-action-state";
 import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { ticketPath } from "@/paths";
 
 const createCommentSchema = z.object({
@@ -30,7 +30,7 @@ export const createComment = async (
     comment = await prisma.comment.create({
       data: {
         userId: user.id,
-        ticketId,
+        ticketId: ticketId,
         ...data,
       },
       include: {
@@ -38,7 +38,7 @@ export const createComment = async (
       },
     });
   } catch (error) {
-    return fromErrorToActionState(error, formData);
+    return fromErrorToActionState(error);
   }
 
   revalidatePath(ticketPath(ticketId));

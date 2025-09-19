@@ -6,7 +6,12 @@ type ThemeProviderProps = {
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
   return (
-    <BaseThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <BaseThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      // disableTransitionOnChange
+    >
       {children}
     </BaseThemeProvider>
   );

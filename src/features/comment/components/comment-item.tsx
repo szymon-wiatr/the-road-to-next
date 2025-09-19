@@ -4,7 +4,7 @@ import { CommentWithMetadata } from "../types";
 
 type CommentItemProps = {
   comment: CommentWithMetadata;
-  buttons?: React.ReactNode[];
+  buttons: React.ReactNode[];
 };
 
 const CommentItem = ({ comment, buttons }: CommentItemProps) => {
@@ -13,7 +13,7 @@ const CommentItem = ({ comment, buttons }: CommentItemProps) => {
       <Card className="p-4 flex-1 flex flex-col gap-y-1">
         <div className="flex justify-between">
           <p className="text-sm text-muted-foreground">
-            {comment.user?.username ?? "Deleted User"}
+            {comment.isOwner ? "You" : comment.user?.username ?? "Deleted User"}
           </p>
           <p className="text-sm text-muted-foreground">
             {format(comment.createdAt, "yyyy-MM-dd, HH:mm")}
@@ -21,6 +21,7 @@ const CommentItem = ({ comment, buttons }: CommentItemProps) => {
         </div>
         <p className="whitespace-pre-line">{comment.content}</p>
       </Card>
+
       <div className="flex flex-col gap-y-1">{buttons}</div>
     </div>
   );

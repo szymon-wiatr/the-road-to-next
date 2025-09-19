@@ -1,18 +1,18 @@
 "use client";
 
 import { useQueryState, useQueryStates } from "nuqs";
+import { useEffect, useRef } from "react";
 import { Pagination } from "@/components/pagination";
+import { PaginatedData } from "@/types/pagination";
 import {
   paginationOptions,
   paginationParser,
   searchParser,
 } from "../search-params";
-import { useEffect, useRef } from "react";
-import { PaginatiedData } from "@/types/pagination";
 import { TicketWithMetadata } from "../types";
 
 type TicketPaginationProps = {
-  paginatedTicketMetadata: PaginatiedData<TicketWithMetadata>["metadata"];
+  paginatedTicketMetadata: PaginatedData<TicketWithMetadata>["metadata"];
 };
 
 const TicketPagination = ({
@@ -31,7 +31,9 @@ const TicketPagination = ({
     prevSearch.current = search;
 
     setPagination({ ...pagination, page: 0 });
-  }, [pagination, search, setPagination]);
+
+    // add more reactive effects here once needed ...
+  }, [search, pagination, setPagination]);
 
   return (
     <Pagination

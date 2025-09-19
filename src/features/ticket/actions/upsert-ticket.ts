@@ -1,19 +1,19 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 import { setCookieByKey } from "@/actions/cookies";
 import {
   ActionState,
   fromErrorToActionState,
   toActionState,
 } from "@/components/form/utils/to-action-state";
-import prisma from "@/lib/prisma";
-import { ticketPath, ticketsPath } from "@/paths";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { z } from "zod";
-import { toCent } from "../../../utils/currency";
 import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect";
 import { isOwner } from "@/features/auth/utils/is-owner";
+import { prisma } from "@/lib/prisma";
+import { ticketPath, ticketsPath } from "@/paths";
+import { toCent } from "@/utils/currency";
 
 const upsertTicketSchema = z.object({
   title: z.string().min(1).max(191),
@@ -49,22 +49,25 @@ export const upsertTicket = async (
       bounty: formData.get("bounty"),
     });
 
-    const dbData = { ...data, userId: user.id, bounty: toCent(data.bounty) };
+    const dbData = {
+      ...data,
+      userId: user.id,
+      bounty: toCent(data.bounty),
+    };
 
     await prisma.ticket.upsert({
-      where: {
-        id: id || "",
-      },
+      where: { id: id || "" },
       update: dbData,
       create: dbData,
     });
   } catch (error) {
     return fromErrorToActionState(error, formData);
   }
+
   revalidatePath(ticketsPath());
 
   if (id) {
-    setCookieByKey("toast", "Ticket updated");
+    await setCookieByKey("toast", "Ticket updated");
     redirect(ticketPath(id));
   }
 

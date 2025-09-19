@@ -1,5 +1,5 @@
 import { LucideMessageSquareWarning } from "lucide-react";
-import React, { cloneElement } from "react";
+import { cloneElement } from "react";
 
 type PlaceholderProps = {
   label: string;
@@ -10,7 +10,7 @@ type PlaceholderProps = {
 const Placeholder = ({
   label,
   icon = <LucideMessageSquareWarning />,
-  button = <div className="h-10" />,
+  button = <div />,
 }: PlaceholderProps) => {
   return (
     <div className="flex-1 self-center flex flex-col items-center justify-center gap-y-2">

@@ -1,18 +1,19 @@
 "use server";
 
-import { hash } from "@node-rs/argon2";
+import { Prisma } from "@prisma/client";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 import {
   ActionState,
   fromErrorToActionState,
   toActionState,
 } from "@/components/form/utils/to-action-state";
-import prisma from "@/lib/prisma";
-import { z } from "zod";
-import { lucia } from "@/lib/lucia";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { hashPassword } from "@/features/password/utils/hash-and-verify";
+import { createSession } from "@/lib/lucia";
+import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
-import { Prisma } from "@prisma/client";
+import { generateRandomToken } from "@/utils/crypto";
+import { setSessionCookie } from "../utils/session-cookie";
 
 const signUpSchema = z
   .object({
@@ -20,9 +21,10 @@ const signUpSchema = z
       .string()
       .min(1)
       .max(191)
-      .refine((value) => !value.includes(" "), {
-        message: "Username cannot contain spaces",
-      }),
+      .refine(
+        (value) => !value.includes(" "),
+        "Username cannot contain spaces"
+      ),
     email: z.string().min(1, { message: "Is required" }).max(191).email(),
     password: z.string().min(6).max(191),
     confirmPassword: z.string().min(6).max(191),
@@ -43,7 +45,7 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
       Object.fromEntries(formData)
     );
 
-    const passwordHash = await hash(password);
+    const passwordHash = await hashPassword(password);
 
     const user = await prisma.user.create({
       data: {
@@ -53,18 +55,22 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
       },
     });
 
-    const session = await lucia.createSession(user.id, {});
-    const sessionCookie = await lucia.createSessionCookie(session.id);
+    const sessionToken = generateRandomToken();
+    const session = await createSession(sessionToken, user.id);
 
-    (await cookies()).set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes
-    );
+    await setSessionCookie(sessionToken, session.expiresAt);
   } catch (error) {
-    if(error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-      return toActionState("ERROR", "Either email or username is already in use", formData);
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return toActionState(
+        "ERROR",
+        "Either email or username is already in use",
+        formData
+      );
     }
+
     return fromErrorToActionState(error, formData);
   }
 

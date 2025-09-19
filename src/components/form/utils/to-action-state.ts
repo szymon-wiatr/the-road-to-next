@@ -24,8 +24,8 @@ export const fromErrorToActionState = (
     return {
       status: "ERROR",
       message: "",
-      fieldErrors: error.flatten().fieldErrors,
       payload: formData,
+      fieldErrors: error.flatten().fieldErrors,
       timestamp: Date.now(),
     };
   } else if (error instanceof Error) {
@@ -39,7 +39,7 @@ export const fromErrorToActionState = (
   } else {
     return {
       status: "ERROR",
-      message: "An unknown error occured",
+      message: "An unknown error occurred",
       payload: formData,
       fieldErrors: {},
       timestamp: Date.now(),
