@@ -4,10 +4,14 @@ import { z } from "zod";
 import {
   ActionState,
   fromErrorToActionState,
+  toActionState,
 } from "@/components/form/utils/to-action-state";
 import { signInPath } from "@/paths";
 import { redirect } from "next/navigation";
 import { setCookieByKey } from "@/actions/cookies";
+import { hashToken } from "@/utils/crypto";
+import { prisma } from "@/lib/prisma";
+import { hashPassword } from "../utils/hash-and-verify";
 
 const passwordResetSchema = z
   .object({
@@ -33,6 +37,46 @@ export const passwordReset = async (
     const { password } = passwordResetSchema.parse({
       password: formData.get("password"),
       confirmPassword: formData.get("confirmPassword"),
+    });
+
+    const tokenHash = hashToken(tokenId);
+
+    const passwordResetToken = await prisma.passwordResetToken.findUnique({
+      where: {
+        tokenHash,
+      },
+    });
+
+    if (passwordResetToken) {
+      await prisma.passwordResetToken.delete({
+        where: {
+          tokenHash,
+        },
+      });
+    }
+
+    if (
+      !passwordResetToken ||
+      Date.now() > passwordResetToken.expiresAt.getTime()
+    ) {
+      return toActionState("ERROR", "Expired or invalid verification token", formData);
+    }
+
+    await prisma.session.deleteMany({
+      where: {
+        userId: passwordResetToken.userId,
+      },
+    });
+
+    const passwordHash = await hashPassword(password);
+
+    await prisma.user.update({
+      where: {
+        id: passwordResetToken.userId,
+      },
+      data: {
+        passwordHash,
+      },
     });
 
     // TODO Impelemt password reset
