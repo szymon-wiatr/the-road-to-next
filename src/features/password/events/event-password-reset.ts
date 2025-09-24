@@ -4,11 +4,11 @@ import { sendEmailPasswordReset } from "../emails/send-email-password-reset";
 import { generatePasswordResetLink } from "../utils/generate-password-reset-link";
 
 export type PasswordResetEventArgs = {
-    data: {
-      userId: string;
-    };
+  data: {
+    userId: string;
   };
-  
+};
+
 export const passwordResetEvent = inngest.createFunction(
   { id: "password-reset" },
   { event: "app/password.password-reset" },
@@ -26,6 +26,10 @@ export const passwordResetEvent = inngest.createFunction(
       user.email,
       passwordResetLink
     );
+
+    if (result.error) {
+      throw new Error(`${result.error.name}: ${result.error.message}`);
+    }
 
     return { event, body: result };
   }
