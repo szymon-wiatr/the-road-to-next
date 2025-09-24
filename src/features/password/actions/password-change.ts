@@ -10,6 +10,7 @@ import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect"
 import { prisma } from "@/lib/prisma";
 import { generatePasswordResetLink } from "../../password/utils/generate-password-reset-link";
 import { verifyPasswordHash } from "../utils/hash-and-verify";
+import { sendEmailPasswordReset } from "../emails/send-email-password-reset";
 
 const passwordChangeSchema = z.object({
   password: z.string().min(6).max(191),
@@ -44,9 +45,7 @@ export const passwordChange = async (
 
     const passwordResetLink = await generatePasswordResetLink(user.id);
 
-    // TODO: Send email with reset link
-    // instead we will just print it to the console for now
-    console.log(passwordResetLink);
+    await sendEmailPasswordReset(user.username, user.email, passwordResetLink);
   } catch (error) {
     return fromErrorToActionState(error, formData);
   }
