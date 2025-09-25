@@ -15,6 +15,7 @@ import { ticketsPath } from "@/paths";
 import { generateRandomToken } from "@/utils/crypto";
 import { setSessionCookie } from "../utils/session-cookie";
 import { generateEmailVerificationCode } from "../utils/generate-email-verification-code";
+import { sendEmailVerification } from "../emails/send-email-verification";
 
 const signUpSchema = z
   .object({
@@ -60,7 +61,7 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
       user.id,
       email
     );
-    console.log(verificationCode);
+    await sendEmailVerification(username, email, verificationCode);
 
     const sessionToken = generateRandomToken();
     const session = await createSession(sessionToken, user.id);
