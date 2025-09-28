@@ -9,7 +9,14 @@ const OrganizationList = async () => {
       {organizations.map((organization) => (
         <div key={organization.id}>
           <div>Name: {organization.name}</div>
-          <div>Joined at: {format(organization.membershipByUser?.joinedAt, "yyyy-MM-dd, HH:mm")}</div>
+          <div>
+            Joined at:{" "}
+            {format(
+              organization.membershipByUser?.joinedAt,
+              "yyyy-MM-dd, HH:mm"
+            )}
+          </div>
+          <div>Memberships: {organization._count.memberships}</div>
         </div>
       ))}
     </div>
