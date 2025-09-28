@@ -5,10 +5,11 @@ import { getOrganizationsByUser } from "@/features/organization/queries/get-orga
 
 type GetAuthOrRedirectOptions = {
   checkEmailVerified?: boolean;
+  checkOrganization?: boolean;
 };
 
 export const getAuthOrRedirect = async (options?: GetAuthOrRedirectOptions) => {
-  const { checkEmailVerified = true } = options ?? {};
+  const { checkEmailVerified = true, checkOrganization = true } = options ?? {};
 
   const auth = await getAuth();
 
@@ -24,10 +25,11 @@ export const getAuthOrRedirect = async (options?: GetAuthOrRedirectOptions) => {
     redirect(emailVerificationPath());
   }
 
-  const organizations = await getOrganizationsByUser();
-
-  if (!organizations.length) {
-    redirect(onboardingPath());
+  if (checkOrganization) {
+    const organizations = await getOrganizationsByUser();
+    if (!organizations.length) {
+      redirect(onboardingPath());
+    }
   }
 
   return auth;
