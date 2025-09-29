@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { ActionState } from "@/components/form/utils/to-action-state";
 
 type OnArgs = {
-  actionState: ActionState | undefined;
+  actionState: ActionState;
 };
 
 type UseActionFeedbackOptions = {
@@ -11,7 +11,7 @@ type UseActionFeedbackOptions = {
 };
 
 const useActionFeedback = (
-  actionState: ActionState,
+  actionState: ActionState | undefined,
   options: UseActionFeedbackOptions
 ) => {
   const prevTimestamp = useRef(actionState?.timestamp);
