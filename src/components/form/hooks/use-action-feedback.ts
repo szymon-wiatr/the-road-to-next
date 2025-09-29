@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { ActionState } from "@/components/form/utils/to-action-state";
 
 type OnArgs = {
-  actionState: ActionState;
+  actionState: ActionState | undefined;
 };
 
 type UseActionFeedbackOptions = {
@@ -14,11 +14,12 @@ const useActionFeedback = (
   actionState: ActionState,
   options: UseActionFeedbackOptions
 ) => {
-  const prevTimestamp = useRef(actionState.timestamp);
-  const isUpdate = prevTimestamp.current !== actionState.timestamp;
+  const prevTimestamp = useRef(actionState?.timestamp);
+  const isUpdate = prevTimestamp.current !== actionState?.timestamp;
 
   useEffect(() => {
     if (!isUpdate) return;
+    if (!actionState) return;
 
     if (actionState.status === "SUCCESS") {
       options.onSuccess?.({ actionState });

@@ -56,7 +56,7 @@ const seed = async () => {
   await prisma.user.deleteMany();
   await prisma.organization.deleteMany();
   await prisma.membership.deleteMany();
-  
+
   const passwordHash = await hash("geheimnis");
 
   const dbOrganization = await prisma.organization.create({
@@ -65,7 +65,6 @@ const seed = async () => {
     },
   });
 
-
   const dbUsers = await prisma.user.createManyAndReturn({
     data: users.map((user) => ({
       ...user,
@@ -73,15 +72,20 @@ const seed = async () => {
     })),
   });
 
-
-  await prisma.membership.create({
-    data: {
-      organizationId: dbOrganization.id,
-      userId: dbUsers[0].id,
-      isActive: true,
-    },
+  await prisma.membership.createMany({
+    data: [
+      {
+        userId: dbUsers[0].id,
+        organizationId: dbOrganization.id,
+        isActive: true,
+      },
+      {
+        userId: dbUsers[1].id,
+        organizationId: dbOrganization.id,
+        isActive: false,
+      },
+    ],
   });
-
 
   const dbTickets = await prisma.ticket.createManyAndReturn({
     data: tickets.map((ticket) => ({
