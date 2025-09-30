@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { MembershipDeleteButton } from "@/features/membership/components/membership-delete-button";
 import { OrganizationDeleteButton } from "./organization-delete-button";
 import { OrganizationSwitchButton } from "./organization-switch-button";
 import { getOrganizationsByUser } from "../queries/get-organizations-by-user";
@@ -39,6 +40,7 @@ const OrganizationList = async ({ limitedAccess }: OrganizationListProps) => {
           <TableHead>Name</TableHead>
           <TableHead>Joined At</TableHead>
           <TableHead>Members</TableHead>
+          <TableHead>My Role</TableHead>
           <TableHead />
         </TableRow>
       </TableHeader>
@@ -77,6 +79,13 @@ const OrganizationList = async ({ limitedAccess }: OrganizationListProps) => {
             </Button>
           );
 
+          const leaveButton = (
+            <MembershipDeleteButton
+              organizationId={organization.id}
+              userId={organization.membershipByUser.userId}
+            />
+          );
+
           const deleteButton = (
             <OrganizationDeleteButton organizationId={organization.id} />
           );
@@ -86,6 +95,7 @@ const OrganizationList = async ({ limitedAccess }: OrganizationListProps) => {
               {switchButton}
               {limitedAccess ? null : detailButton}
               {limitedAccess ? null : editButton}
+              {limitedAccess ? null : leaveButton}
               {limitedAccess ? null : deleteButton}
             </>
           );
@@ -101,6 +111,9 @@ const OrganizationList = async ({ limitedAccess }: OrganizationListProps) => {
                 )}
               </TableCell>
               <TableCell>{organization._count.memberships}</TableCell>
+              <TableCell>
+                {organization.membershipByUser.membershipRole}
+              </TableCell>
               <TableCell className="flex justify-end gap-x-2">
                 {buttons}
               </TableCell>
